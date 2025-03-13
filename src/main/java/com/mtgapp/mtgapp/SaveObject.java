@@ -1,9 +1,13 @@
 package com.mtgapp.mtgapp;
-
 import java.io.*;
 
+/**
+ * Class SaveObject.
+ * Includes methods aimed at and assisting in saving objects to file.
+ */
 public class SaveObject {
 
+/*
 
     public static boolean doesDeckExist(Deck deck) {
         File file = new File("target/classes/decks/" + deck.getName() + ".deck");
@@ -23,7 +27,15 @@ public class SaveObject {
         }
         return false;
     }
+ */
 
+    /**
+     * cardExists()
+     * a boolean method that checks if a card that is trying to be saved is already in the cards directory.
+     * if yes returns true.
+     * @param card
+     * @return
+     */
     public static boolean cardExists(Card card) {
         File file = new File("target/classes/cards/" + card.getName() + ".card");
 
@@ -44,26 +56,15 @@ public class SaveObject {
         return true;
     }
 
-    public static boolean cardExists(String cardName) {
-        String dirPath = "target/classes/cards/";
-        File file = new File(dirPath + cardName + ".card");
-
-
-
-        if (file.exists()) {
-            try{
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Card existingFile = (Card) in.readObject();
-                if (existingFile != null && cardName.equals(existingFile.getName())) {
-                    System.out.println("card already exists");
-                    return true;
-                }else return false;
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }else return true;
-    }
-
+    /**
+     * saveCard()
+     *
+     * Takes as a parameter a Card object and attempt to save it to the cards directory.
+     * if the directory doesnt exists it is created.
+     * If a card with the same name exists in the directory it will not be saved.
+     * uses card.setSave to save the files location.
+     * @param card
+     */
     public static void saveCard(Card card) {
         String dirPath = "target/classes/cards/";
         File dir = new File(dirPath);
@@ -72,14 +73,11 @@ public class SaveObject {
             System.out.println("Creating directory" + dirPath);
             dir.mkdirs();
         }
-
         File file = new File(dirPath + card.getName() + ".card");
-
         if (cardExists(card)) {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(card);
-                System.out.println("Card " + card.getName() + " saved");
                 card.setSave(file.getAbsolutePath());
                 out.close();
             } catch (Exception e) {
@@ -89,7 +87,13 @@ public class SaveObject {
     }
 
 
-
+    /**
+     * SaveDeck()
+     * Attempts to save the param Deck to the directory decks.
+     * if the directory doesnt exists it is created.
+     *
+     * @param deck
+     */
     public static void SaveDeck(Deck deck) {
 
         String dirPath = "target/classes/decks/";
@@ -98,10 +102,8 @@ public class SaveObject {
             System.out.println("creating directory " + dirPath);
             dir.mkdirs();
         }
-
         File file = new File(dirPath + deck.getName() + ".deck");
-
-
+        
         if (file.exists()) {
             try{
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));

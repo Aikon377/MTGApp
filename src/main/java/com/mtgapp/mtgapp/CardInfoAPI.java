@@ -35,15 +35,7 @@ public class CardInfoAPI {
                 System.err.println("Large image URL not found");
             }
 
-            System.out.println("Card info for: " + cardInfo.getName() + " imported successfully.");
-
-/*
-        String largeImageUrl = card.getImageUris().getLarge();
-        System.out.println("Large Image URL: " + largeImageUrl);
-
- */
     }
-
 
     public static void main(String[] args) throws IOException {
 
