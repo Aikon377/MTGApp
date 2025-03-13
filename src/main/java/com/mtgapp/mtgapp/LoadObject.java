@@ -1,5 +1,6 @@
 package com.mtgapp.mtgapp;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,7 +37,6 @@ public class LoadObject {
 
     public static Deck loadDeck(String deckName) throws IOException {
         File file = new File("target/classes/decks/" + deckName + ".deck");
-
         if(file.exists()){
             try{
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
@@ -46,10 +46,28 @@ public class LoadObject {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
+        }else {
+            System.out.println("load failed");
+            return null;
         }
-        System.out.println("load failed");
-        return null;
+
+    }
+
+    public static Deck loadCommanderDeck(String deckName) throws IOException {
+        File file = new File("target/classes/decks/" + deckName + ".cmd_deck");
+        if(file.exists()){
+            try{
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                CommanderDeck existingFile = (CommanderDeck) in.readObject();
+                return existingFile;
+
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            System.out.println("load failed");
+            return null;
+        }
 
     }
 }

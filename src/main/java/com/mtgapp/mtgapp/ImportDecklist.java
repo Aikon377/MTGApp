@@ -18,7 +18,7 @@ public class ImportDecklist {
                     String cardName = parts[1]; // Second part is card name
 
                     for (int i = 0; i < count; i++) {
-                        Card card = LoadObject.loadCard(cardName);
+                        Card card = Card.createCard(cardName);
                         deck.add(card); // Create Card objects
                     }
                 }

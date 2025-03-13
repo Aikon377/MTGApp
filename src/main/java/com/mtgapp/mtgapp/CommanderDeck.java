@@ -2,24 +2,41 @@ package com.mtgapp.mtgapp;
 
 import java.io.IOException;
 
-public class CommanderDeck extends Deck {
+public class CommanderDeck extends Deck implements LegalDeck {
     private Card commander;
 
-    public void setDeckColor(){
+    public void setDeckColor() {
         if (commander != null) {
             this.commander.calcCMC();
             this.setColors(commander.getColor());
         }
     }
-    public String getDeckColor(){
+
+    public String getDeckColor() {
         if (commander != null) {
             return commander.getColor();
-        }
-        else return "";
+        } else return "null color";
     }
 
     public Card getCommander() {
         return commander;
+    }
+
+    public void setCommander(String commander) {
+        try {
+            Card commanderCard = LoadObject.loadCard(commander);
+            if (commanderCard.isLegendary()) {
+                this.commander = commanderCard;
+                this.setDeckColor();
+                this.removeCard(commanderCard);
+                saveDeck();
+            } else {
+                System.out.println("CommanderDeck Error: Commander is not Legendary");
+                this.commander = null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setCommander(Card commander) {
@@ -28,8 +45,9 @@ public class CommanderDeck extends Deck {
             if (commander.isLegendary()) {
                 this.commander = commander;
                 this.setDeckColor();
+                this.removeCard(commander);
                 saveDeck();
-            }else {
+            } else {
                 System.out.println("CommanderDeck Error: Commander is not Legendary");
                 this.commander = null;
             }
@@ -53,7 +71,6 @@ public class CommanderDeck extends Deck {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void deckDetails() {
@@ -61,4 +78,10 @@ public class CommanderDeck extends Deck {
     }
 
 
+    @Override
+    public boolean isLegal() {
+        if (this.getSize() != 99 || !this.commander.isLegendary()) {
+            return false;
+        } else return true;
+    }
 }

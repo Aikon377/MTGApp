@@ -6,24 +6,18 @@ public class test {
 
     public static void main(String[] args) throws IOException {
 
-
-        CommanderDeck kaima = new CommanderDeck("kaima", new Card("Kaima, the Fractured Calm"));
-        CommanderDeck oloro = new CommanderDeck("oloro", "Oloro, Ageless Ascetic");
-
-        System.out.println(oloro.getCommander().oracle_text);
-        System.out.println(oloro.getDeckColor());
-
-
-
-        System.out.println(kaima.getColors());
+       Deck deck = new Deck("Deck");
+       deck.printCards();
 
         try {
             test t = new test();
-          // t.loadCardTest();
-          // t.ImportDeckTest();
+            t.testCommanderDecks();
+            t.loadCardTest();
+            t.ImportDeckTest();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public void ImportDeckTest() {
@@ -40,15 +34,22 @@ public class test {
         //
     }
     public void loadCardTest() throws IOException {
-        Card rip = new Card("Rest in Peace");
 
         try {
+            Card rip = Card.createCard("Rest in Peace");
             rip = LoadObject.loadCard(rip.getName());
-            SaveObject.saveCard(rip);
+            System.out.println(rip.getOracle_text());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+    }
+    public void testCommanderDecks() throws IOException {
+
+        CommanderDeck kaima = new CommanderDeck("kaima", "Kaima, the Fractured Calm");
+        System.out.println("kaima pth: " + kaima.getSave());
+        DeleteObject.deleteObject(kaima);
 
     }
 }

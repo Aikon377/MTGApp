@@ -1,4 +1,6 @@
 package com.mtgapp.mtgapp;
+import java.io.IOException;
+
 public class Card extends CollectibleItem{
     public String color;
     public String type_line;
@@ -12,7 +14,6 @@ public class Card extends CollectibleItem{
     public String oracle_text = null;
     public ImageUris image_uris;
     public String image_uri;
-
     public ImageUris getImage_uris() {
         return image_uris;
     }
@@ -146,17 +147,16 @@ public class Card extends CollectibleItem{
 
     public Card(String name) {
         super(name);
-
-
-    }
-    /*
-    public static Card createCard(String cardName) {
-        if (SaveObject.cardExists(new Card(cardName))) {
-            return LoadCard.loadCard(new Card(cardName));
-        }
     }
 
-     */
+    public static Card createCard(String cardName) throws IOException {
+        Card card = LoadObject.loadCard(cardName);
+        return card;
+    }
+
+
+
+
     public void calcCMC() {
         if (this.mana_cost != null) {
             int cmc = 0;

@@ -1,5 +1,6 @@
 package com.mtgapp.mtgapp;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Deck extends CollectibleItem{
@@ -15,17 +16,19 @@ public class Deck extends CollectibleItem{
     public int enchantments;
     public int lands;
     public int planeswalkers;
-    private boolean foil;
 
-    public boolean isFoil() {
-        return foil;
+    private int size = 0;
+
+    public int getSize() {
+        return size;
     }
 
-    public void setFoil(boolean foil) {
-        this.foil = foil;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public void setCards(List<Card> cards) {
+        size += cards.size();
         this.cards = cards;
     }
 
@@ -70,11 +73,17 @@ public class Deck extends CollectibleItem{
     }
 
     public void addCard(Card card) {
-        cards.add(card);
+        if (cards.add(card)){
+            size++;
+        }
     }
 
     public void removeCard(Card card) {
-        cards.remove(card);
+        if (!(this.cards == null)) {
+            if (this.cards.remove(card)) {
+                this.size--;
+            }
+        }
     }
 
     public void printCards() {
@@ -85,7 +94,7 @@ public class Deck extends CollectibleItem{
                 System.out.println(card.getName());
             }
             System.out.println("--------");
-        }
+        }else System.out.println("Deck is empty");
     }
 
 

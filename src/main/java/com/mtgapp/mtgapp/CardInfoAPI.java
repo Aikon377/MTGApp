@@ -11,10 +11,6 @@ import java.util.regex.Pattern;
 
 public class CardInfoAPI {
 
-    public static void fetchDeckInfo(Deck deck) {
-
-    }
-
     public static void getCardInfo(Card card) throws IOException {
 
             OkHttpClient client = new OkHttpClient();
