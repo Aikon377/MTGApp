@@ -1,7 +1,4 @@
 package com.mtgapp.mtgapp;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Card extends CollectibleItem{
     public String color;
     public String type_line;
@@ -11,7 +8,7 @@ public class Card extends CollectibleItem{
     public String artist;
     public String set;
     public double value;
-    public boolean legendary;
+    public boolean legendary = false;
     public String oracle_text = null;
     public ImageUris image_uris;
     public String image_uri;
@@ -66,6 +63,9 @@ public class Card extends CollectibleItem{
     }
 
     public boolean isLegendary() {
+        if(this.getType_line().toLowerCase().contains("legendary")){
+            this.setLegendary(true);
+        }
         return legendary;
     }
 
@@ -95,6 +95,7 @@ public class Card extends CollectibleItem{
     }
 
     public String getColor() {
+        this.calcCMC();
         return color;
     }
 
@@ -125,7 +126,11 @@ public class Card extends CollectibleItem{
     }
 
     public int getCmc() {
-        return cmc;
+        if (mana_cost != null) {
+            calcCMC();
+            return cmc;
+        }
+        return 0;
     }
 
     public String getMana_cost() {
@@ -152,8 +157,6 @@ public class Card extends CollectibleItem{
     }
 
      */
-
-
     public void calcCMC() {
         if (this.mana_cost != null) {
             int cmc = 0;
@@ -177,82 +180,85 @@ public class Card extends CollectibleItem{
     }
 
 
-    public String manaToWedge(String mana){
+    public String manaToWedge(String colors){
         String wedge = "";
-        if (mana.equals("WUBRG")) {
-            wedge = "5 Color";
-        }
-        // 4-color
-        else if (mana.equals("WUBR")) {
-            wedge = "Yore-Tiller";
-        } else if (mana.equals("WUBG")) {
-            wedge = "Witch-Maw";
-        } else if (mana.equals("WURG")) {
-            wedge = "Ink-Treader";
-        } else if (mana.equals("WBRG")) {
-            wedge = "Dune-Brood";
-        } else if (mana.equals("UBRG")) {
-            wedge = "Glint-Eye";
-        }
-        // 3-color Wedges
-        else if (mana.equals("WUB")) {
-            wedge = "Esper";
-        } else if (mana.equals("UBR")) {
-            wedge = "Grixis";
-        } else if (mana.equals("BRG")) {
-            wedge = "Jund";
-        } else if (mana.equals("RGW")) {
-            wedge = "Naya";
-        } else if (mana.equals("GWU")) {
-            wedge = "Bant";
-        }
-        // 3-color Shards
-        else if (mana.equals("WUR")) {
-            wedge = "Jeskai";
-        } else if (mana.equals("UBG")) {
-            wedge = "Sultai";
-        } else if (mana.equals("BRW")) {
-            wedge = "Mardu";
-        } else if (mana.equals("RGU")) {
-            wedge = "Temur";
-        }
-        // 2-color Guilds
-        else if (mana.equals("WU")) {
-            wedge = "Azorius";
-        } else if (mana.equals("UB")) {
-            wedge = "Dimir";
-        } else if (mana.equals("BR")) {
-            wedge = "Rakdos";
-        } else if (mana.equals("RG")) {
-            wedge = "Gruul";
-        } else if (mana.equals("GW")) {
-            wedge = "Selesnya";
-        } else if (mana.equals("WB")) {
-            wedge = "Orzhov";
-        } else if (mana.equals("UR")) {
-            wedge = "Izzet";
-        } else if (mana.equals("BG")) {
-            wedge = "Golgari";
-        } else if (mana.equals("RW")) {
-            wedge = "Boros";
-        } else if (mana.equals("GU")) {
-            wedge = "Simic";
-        }
-        // 1-color
-        else if (mana.equals("W")) {
-            wedge = "White";
-        } else if (mana.equals("U")) {
-            wedge = "Blue";
-        } else if (mana.equals("B")) {
-            wedge = "Black";
-        } else if (mana.equals("R")) {
-            wedge = "Red";
-        } else if (mana.equals("G")) {
-            wedge = "Green";
-        }
-        // Default case if no match is found
-        else {
-            wedge = "Colorless";
+        if (colors != null) {
+            String mana = colors;
+            if (mana.equals("WUBRG")) {
+                wedge = "5 Color";
+            }
+            // 4-color
+            else if (mana.equals("WUBR")) {
+                wedge = "Yore-Tiller";
+            } else if (mana.equals("WUBG")) {
+                wedge = "Witch-Maw";
+            } else if (mana.equals("WURG")) {
+                wedge = "Ink-Treader";
+            } else if (mana.equals("WBRG")) {
+                wedge = "Dune-Brood";
+            } else if (mana.equals("UBRG")) {
+                wedge = "Glint-Eye";
+            }
+            // 3-color Wedges
+            else if (mana.equals("WUB")) {
+                wedge = "Esper";
+            } else if (mana.equals("UBR")) {
+                wedge = "Grixis";
+            } else if (mana.equals("BRG")) {
+                wedge = "Jund";
+            } else if (mana.equals("RGW")) {
+                wedge = "Naya";
+            } else if (mana.equals("GWU")) {
+                wedge = "Bant";
+            }
+            // 3-color Shards
+            else if (mana.equals("WUR")) {
+                wedge = "Jeskai";
+            } else if (mana.equals("UBG")) {
+                wedge = "Sultai";
+            } else if (mana.equals("BRW")) {
+                wedge = "Mardu";
+            } else if (mana.equals("RGU")) {
+                wedge = "Temur";
+            }
+            // 2-color Guilds
+            else if (mana.equals("WU")) {
+                wedge = "Azorius";
+            } else if (mana.equals("UB")) {
+                wedge = "Dimir";
+            } else if (mana.equals("BR")) {
+                wedge = "Rakdos";
+            } else if (mana.equals("RG")) {
+                wedge = "Gruul";
+            } else if (mana.equals("GW")) {
+                wedge = "Selesnya";
+            } else if (mana.equals("WB")) {
+                wedge = "Orzhov";
+            } else if (mana.equals("UR")) {
+                wedge = "Izzet";
+            } else if (mana.equals("BG")) {
+                wedge = "Golgari";
+            } else if (mana.equals("RW")) {
+                wedge = "Boros";
+            } else if (mana.equals("GU")) {
+                wedge = "Simic";
+            }
+            // 1-color
+            else if (mana.equals("W")) {
+                wedge = "White";
+            } else if (mana.equals("U")) {
+                wedge = "Blue";
+            } else if (mana.equals("B")) {
+                wedge = "Black";
+            } else if (mana.equals("R")) {
+                wedge = "Red";
+            } else if (mana.equals("G")) {
+                wedge = "Green";
+            }
+            // Default case if no match is found
+            else {
+                wedge = "Colorless";
+            }
         }
 
         return wedge; // Ensure you return the determined wedge

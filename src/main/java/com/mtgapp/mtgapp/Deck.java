@@ -1,6 +1,5 @@
 package com.mtgapp.mtgapp;
 
-import java.io.IOException;
 import java.util.List;
 
 public class Deck extends CollectibleItem{
@@ -18,6 +17,13 @@ public class Deck extends CollectibleItem{
     public int planeswalkers;
     private boolean foil;
 
+    public boolean isFoil() {
+        return foil;
+    }
+
+    public void setFoil(boolean foil) {
+        this.foil = foil;
+    }
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
@@ -87,15 +93,13 @@ public class Deck extends CollectibleItem{
         return cards;
     }
 
-    public String deckDetails() {
+    public void deckDetails() {
         if (cards != null) {
             System.out.println("Deck: " + this.getName());
             for (Card card : cards) {
-                System.out.println(card.getName() + " " + card.getMana_cost());
+                System.out.println(card.getName());
             }
-            return cards.toString();
-        }
-        else return null;
+        }else System.out.println("Decks: " + this.getName() + " cardlist is null");
     }
 
     public void refreshDetails() {
@@ -108,19 +112,25 @@ public class Deck extends CollectibleItem{
 
         if (this.cards != null) {
             for (Card card : cards) {
-                switch (card.getType_line()) {
-                    case "Land":
-                        lands++;
-                    case "Planeswalker":
-                        planeswalkers++;
-                    case "Enchant":
-                        enchantments++;
-                    case "Creature":
-                        creatures++;
-                    case "Sorceries":
-                        sorceries++;
-                    case "Instant":
-                        instants++;
+                card.calcCMC();
+
+                if (card.getType_line().contains("Land")) {
+                    lands++;
+                }
+                if (card.getType_line().contains("Planeswalker")) {
+                    planeswalkers++;
+                }
+                if (card.getType_line().contains("Enchantment")) {
+                    enchantments++;
+                }
+                if (card.getType_line().contains("Creature")) {
+                    creatures++;
+                }
+                if (card.getType_line().contains("Sorcery")) {
+                    sorceries++;
+                }
+                if (card.getType_line().contains("Instant")) {
+                    instants++;
                 }
             }
             this.lands = lands;

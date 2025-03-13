@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class LoadCard {
+public class LoadObject {
 
     public static Card loadCard(String cardName) throws IOException {
 
@@ -16,8 +16,9 @@ public class LoadCard {
                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                Card card2 = (Card) in.readObject();
                if (card2.oracle_text == null) {
-                   System.out.println("Card oracle_text is empty, fetching info... ");
+                   System.out.println("Card oracle_text is empty, fetching new info... ");
                    CardInfoAPI.getCardInfo(card2);
+                   SaveObject.saveCard(card2);
                }
                return card2;
 
@@ -29,10 +30,8 @@ public class LoadCard {
             Card card = new Card(cardName);
             CardInfoAPI.getCardInfo(card);
             SaveObject.saveCard(card);
+            return card;
         }
-        System.out.println("Load failed");
-        return null;
-
     }
 
     public static Deck loadDeck(String deckName) throws IOException {
@@ -41,8 +40,8 @@ public class LoadCard {
         if(file.exists()){
             try{
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Object existingFile = in.readObject();
-                return (Deck) existingFile;
+                Deck existingFile = (Deck) in.readObject();
+                return existingFile;
 
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);

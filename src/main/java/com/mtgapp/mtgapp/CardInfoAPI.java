@@ -28,7 +28,6 @@ public class CardInfoAPI {
             Card cardInfo = gson.fromJson(jsonData, Card.class);
 
             card.copyFrom(cardInfo);
-            SaveObject.saveCard(card);
 
             // Raw fetch the image URL from JSON
             Pattern pattern = Pattern.compile("\"large\":\"(https://[^\"]+)\"");
@@ -39,7 +38,7 @@ public class CardInfoAPI {
             } else {
                 System.err.println("Large image URL not found");
             }
-            SaveObject.saveCard(card);
+
             System.out.println("Card info for: " + cardInfo.getName() + " imported successfully.");
 
 /*

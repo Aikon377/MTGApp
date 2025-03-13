@@ -8,6 +8,7 @@ public abstract class CollectibleItem implements Serializable {
     public String name;
     public Date dateAcquired;
 
+
     public String getName() {
         return name;
     }

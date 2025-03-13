@@ -43,7 +43,7 @@ public class SaveObject {
         return true;
     }
 
-    public static boolean saveCard(Card card) {
+    public static void saveCard(Card card) {
         File file = new File("target/classes/cards/" + card.getName() + ".card");
         if (cardExists(card)) {
             try {
@@ -54,9 +54,7 @@ public class SaveObject {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            return true;
         }
-        return false;
     }
 
 
@@ -68,25 +66,23 @@ public class SaveObject {
         if (file.exists()) {
             try{
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Object existingFile = in.readObject();
-
-                if (existingFile.equals(deck)) {
-                    System.out.println("Deck already exists");
-                    return;
+                Deck existingFile = (Deck) in.readObject();
+                if (deck.equals(existingFile)) {
+                    System.out.println("Deck " + deck.getName()+ " already exists.");
                 }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-            try{
+        }else {
+            try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(deck);
-                System.out.println("Deck Saved");
+                System.out.println("Deck " + deck.getName() + " saved.");
                 out.close();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
 
     }
 }

@@ -4,7 +4,8 @@ import java.util.*;
 
 public class ImportDecklist {
 
-        public static List<Card> parseDeck(String filePath) {
+        public static List<Card> parseDeck(String deckListName) {
+            String filePath = "src/main/resources/decklists/" + deckListName;
 
             List<Card> deck = new ArrayList<>();
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -17,12 +18,10 @@ public class ImportDecklist {
                     String cardName = parts[1]; // Second part is card name
 
                     for (int i = 0; i < count; i++) {
-                        Card card = LoadCard.loadCard(cardName);
+                        Card card = LoadObject.loadCard(cardName);
                         deck.add(card); // Create Card objects
                     }
-
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
